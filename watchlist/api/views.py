@@ -1,24 +1,32 @@
-from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from watchlist.models import Movies
-from django.http import JsonResponse
+from .serializers import MovieSerializer
 
 
+@api_view(http_method_names=['GET', 'POST'])
 def movie_list(request):
-    movies = Movies.objects.all()
-    data = {
-        'movies' : list(movies.values())
-        }
+    if request.method == 'GET':
+        movies = Movies.objects.all()
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
+    
+    if request.method == 'POST':
+        serializer = MovieSerializer(data=request.data) 
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
-    return JsonResponse(data)
 
-
+@api_view()
 def movie_details(request, pk):
-    movie = Movies.objects.get(pk=pk)
-    data = {
-        'title' : movie.title,
-        'description' : movie.description,
-        'active' : movie.active
-    }
+    try:
+        movie = Movies.objects.get(pk=pk)
+    except Movies.DoesNotExist:
+        return Response({'error': 'Movie not found'}, status=404)
+    
+    serializer = MovieSerializer(movie)  
+    return Response(serializer.data)
 
-    return JsonResponse(data)
 
