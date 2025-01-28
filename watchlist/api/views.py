@@ -19,7 +19,7 @@ def movie_list(request):
         return Response(serializer.errors, status=400)
 
 
-@api_view(http_method_names=['GET', 'PUT'])
+@api_view(http_method_names=['GET', 'PUT', 'DELETE'])
 def movie_details(request, pk):
     if request.method == 'GET':
         try:
@@ -37,6 +37,11 @@ def movie_details(request, pk):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
+    
+    if request.method == 'DELETE':
+        movie = Movies.objects.get(pk=pk)
+        movie.delete()
+        return Response({'message': 'Movie deleted successfully'})
 
 
 
