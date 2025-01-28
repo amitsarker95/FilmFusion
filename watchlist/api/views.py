@@ -19,14 +19,24 @@ def movie_list(request):
         return Response(serializer.errors, status=400)
 
 
-@api_view()
+@api_view(http_method_names=['GET', 'PUT'])
 def movie_details(request, pk):
-    try:
-        movie = Movies.objects.get(pk=pk)
-    except Movies.DoesNotExist:
-        return Response({'error': 'Movie not found'}, status=404)
+    if request.method == 'GET':
+        try:
+            movie = Movies.objects.get(pk=pk)
+        except Movies.DoesNotExist:
+            return Response({'error': 'Movie not found'}, status=404)
     
-    serializer = MovieSerializer(movie)  
-    return Response(serializer.data)
+        serializer = MovieSerializer(movie)  
+        return Response(serializer.data)
+    
+    if request.method == 'PUT':
+        movie = Movies.objects.get(pk=pk)
+        serializer = MovieSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
 
 
