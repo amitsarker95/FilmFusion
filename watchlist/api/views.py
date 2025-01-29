@@ -25,7 +25,7 @@ class MovieDetailApiView(APIView):
     def get(self, request, pk):
         try:
             movie = Movies.objects.get(pk=pk)
-        except movie.DoesNotExist:
+        except Movies.DoesNotExist:
             return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = MovieSerializer(movie)
         return Response(serializer.data, status=status.HTTP_302_FOUND)
