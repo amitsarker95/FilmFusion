@@ -90,4 +90,10 @@ class StreamPlatformDetailApiView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        platform = StreamPlatform.objects.get(pk=pk)
+        platform.delete()
+        return Response({'delete': "Object has been deleted"}, status=status.HTTP_204_NO_CONTENT)
+
 
