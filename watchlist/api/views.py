@@ -95,5 +95,6 @@ class StreamPlatformDetailApiView(APIView):
         platform = StreamPlatform.objects.get(pk=pk)
         platform.delete()
         return Response({'delete': "Object has been deleted"}, status=status.HTTP_204_NO_CONTENT)
+    
 
 
