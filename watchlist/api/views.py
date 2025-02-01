@@ -99,25 +99,15 @@ class StreamPlatformDetailApiView(APIView):
         return Response({'delete': "Object has been deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 
-class ReviewListView(mixins.ListModelMixin,
-                        mixins.CreateModelMixin,
-                        generics.GenericAPIView):
+class ReviewListView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
     
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-    
-class ReviewDetailView(mixins.RetrieveModelMixin, generics.GenericAPIView):
+class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
     
 
 
