@@ -4,7 +4,8 @@ from rest_framework import generics
 from rest_framework.views import APIView
 
 from watchlist.models import WatchList, StreamPlatform, Review
-from .serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
+from .serializers import WatchListSerializer, StreamPlatformSerializer, \
+                         ReviewSerializer, ReviewCreateSerializer
 
 
 class WatchListApiView(APIView):
@@ -99,9 +100,22 @@ class StreamPlatformDetailApiView(APIView):
         return Response({'delete': "Object has been deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 
-class ReviewListView(generics.ListCreateAPIView):
-    queryset = Review.objects.all()
+class ReviewCreateView(generics.CreateAPIView):
+
+    serializer_class = ReviewCreateSerializer
+
+    def perform_create(self, serializer):
+        pk = self.kwargs.get('pk')
+        watchlist_obj = WatchList.objects.get(pk=pk)
+        serializer.save(watchlist=watchlist_obj)
+
+class ReviewListView(generics.ListAPIView):
+
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        return Review.objects.filter(watchlist=pk) 
     
     
 class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):

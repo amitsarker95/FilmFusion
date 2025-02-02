@@ -2,6 +2,12 @@ from rest_framework import serializers
 from watchlist.models import WatchList, StreamPlatform, Review
 
 
+class ReviewCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Review
+        exclude = ('watchlist',)
+
 class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
