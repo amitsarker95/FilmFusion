@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404
+#Rest Framework
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.viewsets import ViewSet
 from rest_framework.views import APIView
-
+#Models and Serializers
 from watchlist.models import WatchList, StreamPlatform, Review
 from .serializers import WatchListSerializer, StreamPlatformSerializer, \
                          ReviewSerializer, ReviewCreateSerializer
