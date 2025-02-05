@@ -32,3 +32,8 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Rate : {self.rating} | Show name : {self.watchlist.title}'
+    
+
+
+class User(models.Model):
+    pass
