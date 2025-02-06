@@ -107,12 +107,11 @@ class ReviewCreateView(generics.CreateAPIView):
     def get_queryset(self):
         return Review.objects.all()
     
-
     def perform_create(self, serializer):
         pk = self.kwargs.get('pk')
         watchlist_obj = WatchList.objects.get(pk=pk)
         review_user = self.request.user
-        user =Review.objects.filter(watchlist=watchlist_obj, review_user=review_user)
+        user = Review.objects.filter(watchlist=watchlist_obj, review_user=review_user)
         if user.exists:
             raise ValidationError('You have already reviewed this show.')
         serializer.save(watchlist=watchlist_obj, review_user=review_user)
