@@ -3,7 +3,7 @@ from watchlist.models import WatchList, StreamPlatform, Review
 
 # Review Start points
 class ReviewCreateSerializer(serializers.ModelSerializer):
-
+    review_user = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Review
         exclude = ('watchlist',)
