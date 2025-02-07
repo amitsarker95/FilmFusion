@@ -8,14 +8,14 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
 #Models , Serializers and Permissions 
-from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly
+from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly, UserOrNone
 from watchlist.models import WatchList, StreamPlatform, Review
 from .serializers import WatchListSerializer, StreamPlatformSerializer, \
                          ReviewSerializer, ReviewCreateSerializer
 
 
 class WatchListApiView(APIView):
-
+    permission_classes = [UserOrNone]
     def get(self, request):
         movies = WatchList.objects.all()
         serializer = WatchListSerializer(movies, many=True)
