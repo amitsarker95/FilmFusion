@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 #Models , Serializers and Permissions 
-from .permissions import AdminOrReadOnly
+from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly
 from watchlist.models import WatchList, StreamPlatform, Review
 from .serializers import WatchListSerializer, StreamPlatformSerializer, \
                          ReviewSerializer, ReviewCreateSerializer
@@ -132,7 +132,7 @@ class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [ReviewUserOrReadOnly]
     
 
 
