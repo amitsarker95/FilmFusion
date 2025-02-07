@@ -25,7 +25,7 @@ class WatchListSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
     class Meta:
         model = WatchList
-        fields = ['id','title', 'storyLine', 'active', 'created', 'reviews']
+        fields = ['id','title', 'storyLine','avg_rating','total_reviews', 'active', 'created', 'reviews']
 
 
 #Watch List End
