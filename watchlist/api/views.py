@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 
 #Models , Serializers and Permissions 
 from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly, UserOrNone
@@ -15,7 +16,7 @@ from .serializers import WatchListSerializer, StreamPlatformSerializer, \
 
 
 class WatchListApiView(APIView):
-    permission_classes = [UserOrNone]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         movies = WatchList.objects.all()
         serializer = WatchListSerializer(movies, many=True)
