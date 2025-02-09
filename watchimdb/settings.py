@@ -32,6 +32,7 @@ CUSTOM_APPS = [
     'rest_framework',
     'watchlist',
     'rest_framework_simplejwt',
+    'user_app',
 ]
 
 INSTALLED_APPS = BUILT_IN_APPS + CUSTOM_APPS
@@ -136,6 +137,6 @@ DJOSER = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
