@@ -16,7 +16,7 @@ from .serializers import WatchListSerializer, StreamPlatformSerializer, \
 
 
 class WatchListApiView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AdminOrReadOnly]
     def get(self, request):
         movies = WatchList.objects.all()
         serializer = WatchListSerializer(movies, many=True)
@@ -32,7 +32,7 @@ class WatchListApiView(APIView):
 
 
 class WatchListDetailApiView(APIView):
-
+    permission_classes = [AdminOrReadOnly]
     def get(self, request, pk):
         try:
             movie = WatchList.objects.get(pk=pk)
