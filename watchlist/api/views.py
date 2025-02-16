@@ -66,7 +66,7 @@ class WatchListDetailApiView(APIView):
     
 
 class StreamPlatformViewSet(ViewSet):
-    
+    permission_classes = [AdminOrReadOnly]
     def list(self, request):
         queryset = StreamPlatform.objects.all()
         serializer = StreamPlatformSerializer(queryset, many=True)
