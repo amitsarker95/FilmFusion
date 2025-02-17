@@ -106,6 +106,7 @@ class StreamPlatformViewSet(ViewSet):
 class ReviewCreateView(generics.CreateAPIView):
 
     serializer_class = ReviewCreateSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Review.objects.all()
