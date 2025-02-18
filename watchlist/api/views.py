@@ -9,7 +9,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 
 #Models , Serializers and Permissions 
-from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly, UserOrNone
+from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly
 from watchlist.models import WatchList, StreamPlatform, Review
 from .serializers import WatchListSerializer, StreamPlatformSerializer, \
                          ReviewSerializer, ReviewCreateSerializer
