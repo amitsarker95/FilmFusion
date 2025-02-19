@@ -14,13 +14,17 @@ from watchlist.models import WatchList, StreamPlatform, Review
 from .serializers import WatchListSerializer, StreamPlatformSerializer, \
                          ReviewSerializer, ReviewCreateSerializer
 
+from .pagination import MyPagination
+
 
 class WatchListApiView(APIView):
     permission_classes = [AdminOrReadOnly]
     def get(self, request):
         movies = WatchList.objects.all()
-        serializer = WatchListSerializer(movies, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = MyPagination()
+        paginated_movies = paginator.paginate_queryset(movies, request)
+        serializer = WatchListSerializer(paginated_movies, many=True)
+        return paginator.get_paginated_response(serializer.data)
     
     def post(self, request):
         serializer = WatchListSerializer(data=request.data)
