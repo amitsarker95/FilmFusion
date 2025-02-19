@@ -20,7 +20,7 @@ from .pagination import MyPagination
 class WatchListApiView(APIView):
     permission_classes = [AdminOrReadOnly]
     def get(self, request):
-        movies = WatchList.objects.all()
+        movies = WatchList.objects.all().order_by("id")
         paginator = MyPagination()
         paginated_movies = paginator.paginate_queryset(movies, request)
         serializer = WatchListSerializer(paginated_movies, many=True)
