@@ -138,10 +138,11 @@ class ReviewListView(generics.ListAPIView):
 
     serializer_class = ReviewSerializer
     permission_classes = [AdminOrReadOnly]
+    pagination_class = MyPagination
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        return Review.objects.filter(watchlist=pk) 
+        return Review.objects.filter(watchlist=pk) .order_by('-created')
     
     
 class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
