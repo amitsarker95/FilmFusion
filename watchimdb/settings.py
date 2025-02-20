@@ -33,6 +33,7 @@ CUSTOM_APPS = [
     'watchlist',
     'rest_framework_simplejwt',
     'user_app',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 INSTALLED_APPS = BUILT_IN_APPS + CUSTOM_APPS
