@@ -31,11 +31,13 @@ class LoginView(APIView):
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
-            return Response(
-                {
+            data = {
+                    'email' : str(user.email),
                     'refresh_token': str(refresh),
                     'access_token': str(refresh.access_token)
-                 },
+                 }
+            return Response(
+                data,
                 status=status.HTTP_200_OK
             )
     
