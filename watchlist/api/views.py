@@ -142,7 +142,7 @@ class ReviewListView(generics.ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        return Review.objects.filter(watchlist=pk) .order_by('-created')
+        return Review.objects.filter(watchlist=pk).order_by('-created')
     
     
 class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
