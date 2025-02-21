@@ -20,7 +20,7 @@ from .pagination import MyPagination
 
 class WatchListApiView(APIView):
     permission_classes = [AdminOrReadOnly]
-    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    
     def get(self, request):
         movies = WatchList.objects.all().order_by("id")
         paginator = MyPagination()
@@ -39,6 +39,7 @@ class WatchListApiView(APIView):
 
 class WatchListDetailApiView(APIView):
     permission_classes = [AdminOrReadOnly]
+    throttle_classes = [UserRateThrottle]
     def get(self, request, pk):
         try:
             movie = WatchList.objects.get(pk=pk)
@@ -141,6 +142,7 @@ class ReviewListView(generics.ListAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [AdminOrReadOnly]
     pagination_class = MyPagination
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
@@ -152,6 +154,7 @@ class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = [ReviewUserOrReadOnly]
+    throttle_classes = [UserRateThrottle]
     
 
 
