@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import AnonRateThrottle
 
 #Models , Serializers and Permissions 
 from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly
@@ -19,6 +20,7 @@ from .pagination import MyPagination
 
 class WatchListApiView(APIView):
     permission_classes = [AdminOrReadOnly]
+    throttle_classes = [AnonRateThrottle]
     def get(self, request):
         movies = WatchList.objects.all().order_by("id")
         paginator = MyPagination()

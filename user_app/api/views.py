@@ -36,10 +36,7 @@ class LoginView(APIView):
                     'refresh_token': str(refresh),
                     'access_token': str(refresh.access_token)
                  }
-            return Response(
-                data,
-                status=status.HTTP_200_OK
-            )
+            return Response(data, status=status.HTTP_200_OK)
     
 
 class LogOutView(APIView):
