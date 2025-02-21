@@ -12,6 +12,7 @@ from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 #Models , Serializers and Permissions 
 from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly
 from watchlist.models import WatchList, StreamPlatform, Review
+from .throttling import ReviewCreateThrottle, ReviewListThrottle
 from .serializers import WatchListSerializer, StreamPlatformSerializer, \
                          ReviewSerializer, ReviewCreateSerializer
 
@@ -114,6 +115,7 @@ class ReviewCreateView(generics.CreateAPIView):
 
     serializer_class = ReviewCreateSerializer
     permission_classes = [IsAuthenticated]
+    throttle_classes = [ReviewCreateThrottle]
 
     def get_queryset(self):
         return Review.objects.all()
@@ -142,7 +144,7 @@ class ReviewListView(generics.ListAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [AdminOrReadOnly]
     pagination_class = MyPagination
-    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    throttle_classes = [ReviewListThrottle]
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
