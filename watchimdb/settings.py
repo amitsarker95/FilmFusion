@@ -133,7 +133,7 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '5/day',
         'user': '10/day',
-        'review-create' : '2/day',
+        'review-create' : '3/day',
         'review-list' : '10/day',
     },
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
