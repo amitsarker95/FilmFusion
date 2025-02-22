@@ -34,6 +34,7 @@ CUSTOM_APPS = [
     'rest_framework_simplejwt',
     'user_app',
     'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
 ]
 
 INSTALLED_APPS = BUILT_IN_APPS + CUSTOM_APPS

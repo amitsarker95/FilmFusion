@@ -19,6 +19,8 @@ from .serializers import WatchListSerializer, StreamPlatformSerializer, \
 from .pagination import MyPagination
 
 
+
+
 class WatchListApiView(APIView):
     permission_classes = [AdminOrReadOnly]
     
@@ -157,6 +159,16 @@ class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [ReviewUserOrReadOnly]
     throttle_classes = [UserRateThrottle]
+
+
+
+class UserReviews(generics.ListAPIView):
+
+    serializer_class = ReviewSerializer
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return Review.objects.filter(review_user__username=username)
+    
     
 
 
