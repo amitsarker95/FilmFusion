@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
+from rest_framework import mixins, viewsets
 
 #Models , Serializers and Permissions 
 from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly
@@ -21,23 +22,21 @@ from .pagination import MyPagination
 
 
 
-class WatchListApiView(APIView):
+class WatchListViewSet(mixins.ListModelMixin,
+                       mixins.CreateModelMixin,
+                       viewsets.GenericViewSet):
+    queryset = WatchList.objects.all().order_by("id")
+    serializer_class = WatchListSerializer
     permission_classes = [AdminOrReadOnly]
-    
-    def get(self, request):
-        movies = WatchList.objects.all().order_by("id")
-        paginator = MyPagination()
-        paginated_movies = paginator.paginate_queryset(movies, request)
-        serializer = WatchListSerializer(paginated_movies, many=True)
-        return paginator.get_paginated_response(serializer.data)
-    
-    def post(self, request):
-        serializer = WatchListSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    throttle_classes = [AnonRateThrottle]
+    pagination_class = MyPagination
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class WatchListDetailApiView(APIView):
@@ -168,7 +167,24 @@ class UserReviews(generics.ListAPIView):
     def get_queryset(self):
         username = self.kwargs['username']
         return Review.objects.filter(review_user__username=username)
-    
-    
+
+
+class WatchListViewSet(mixins.ListModelMixin,
+                       mixins.CreateModelMixin,
+                       viewsets.GenericViewSet):
+    queryset = WatchList.objects.all().order_by("id")
+    serializer_class = WatchListSerializer
+    permission_classes = [AdminOrReadOnly]
+    throttle_classes = [AnonRateThrottle]
+    pagination_class = MyPagination
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
 
 
