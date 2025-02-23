@@ -23,6 +23,10 @@ class WatchList(models.Model):
     def __str__(self):
         return self.title
     
+    class Meta:
+        unique_together = ['title', 'platform']
+        ordering = ['-avg_rating']
+    
 
 
 class Review(models.Model):
@@ -37,6 +41,9 @@ class Review(models.Model):
     def __str__(self):
         return f'ID: {self.id} Rate : {self.rating} | Show name : {self.watchlist.title} | Username : {self.review_user.username}'
     
+    class Meta:
+        unique_together = ['watchlist', 'review_user']
+        ordering = ['-created']
 
 
 # class User(models.Model):
