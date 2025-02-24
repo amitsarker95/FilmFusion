@@ -35,6 +35,7 @@ CUSTOM_APPS = [
     'user_app',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    
 ]
 
 INSTALLED_APPS = BUILT_IN_APPS + CUSTOM_APPS
@@ -135,6 +136,8 @@ REST_FRAMEWORK = {
     },
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5,
+
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 DJOSER = {
