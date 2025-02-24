@@ -167,6 +167,15 @@ class UserReviews(generics.ListAPIView):
     def get_queryset(self):
         username = self.kwargs['username']
         return Review.objects.filter(review_user__username=username)
+    
+
+class UserReviewPerams(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    def get_queryset(self):
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            queryset = Review.objects.filter(review_user__username=username)
+        return queryset
 
 
 class WatchListViewSet(mixins.ListModelMixin,
