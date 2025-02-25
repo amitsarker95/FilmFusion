@@ -9,6 +9,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from rest_framework import mixins, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
 
 #Models , Serializers and Permissions 
 from .permissions import AdminOrReadOnly, ReviewUserOrReadOnly
@@ -146,7 +147,8 @@ class ReviewListView(generics.ListAPIView):
     permission_classes = [AdminOrReadOnly]
     pagination_class = MyPagination
     throttle_classes = [ReviewListThrottle]
-
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['rating', 'active']
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         return Review.objects.filter(watchlist=pk).order_by('-created')
