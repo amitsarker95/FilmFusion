@@ -19,6 +19,7 @@ from .serializers import WatchListSerializer, StreamPlatformSerializer, \
                          ReviewSerializer, ReviewCreateSerializer
 
 from .pagination import MyPagination
+from .filters import WatchListFilter
 
 
 
@@ -31,6 +32,18 @@ class WatchListViewSet(mixins.ListModelMixin,
     permission_classes = [AdminOrReadOnly]
     throttle_classes = [AnonRateThrottle]
     pagination_class = MyPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = WatchListFilter
+
+    def list(self, request, *args, **kwargs):
+        print("🚀 Request Received!")
+        print("🔍 Raw Request Data:", request.data)
+        print("Query Parameters:", request.GET)  
+        filtered_qs = self.filter_queryset(self.get_queryset())
+        print("Filtered Queryset:", filtered_qs.query) 
+        print(WatchList.objects.filter(title="Man vs wild"))
+        print(WatchList.objects.filter(title__icontains="man vs wild"))
+        return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
