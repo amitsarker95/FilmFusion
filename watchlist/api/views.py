@@ -23,6 +23,12 @@ from .filters import WatchListFilter
 
 
 
+#test view for filters
+class WList(generics.ListAPIView):
+    queryset = WatchList.objects.all()
+    serializer_class = WatchListSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = WatchListFilter
 
 class WatchListViewSet(mixins.ListModelMixin,
                        mixins.CreateModelMixin,
