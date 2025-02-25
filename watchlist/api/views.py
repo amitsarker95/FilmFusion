@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 #Models , Serializers and Permissions 
@@ -27,7 +27,8 @@ from .filters import WatchListFilter
 class WList(generics.ListAPIView):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
-    filter_backends = [DjangoFilterBackend]
+    # filter_backends = [DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     filterset_class = WatchListFilter
 
 class WatchListViewSet(mixins.ListModelMixin,
@@ -41,15 +42,15 @@ class WatchListViewSet(mixins.ListModelMixin,
     filter_backends = [DjangoFilterBackend]
     filterset_class = WatchListFilter
 
-    def list(self, request, *args, **kwargs):
-        print("🚀 Request Received!")
-        print("🔍 Raw Request Data:", request.data)
-        print("Query Parameters:", request.GET)  
-        filtered_qs = self.filter_queryset(self.get_queryset())
-        print("Filtered Queryset:", filtered_qs.query) 
-        print(WatchList.objects.filter(title="Man vs wild"))
-        print(WatchList.objects.filter(title__icontains="man vs wild"))
-        return super().list(request, *args, **kwargs)
+    # def list(self, request, *args, **kwargs):
+    #     print("🚀 Request Received!")
+    #     print("🔍 Raw Request Data:", request.data)
+    #     print("Query Parameters:", request.GET)  
+    #     filtered_qs = self.filter_queryset(self.get_queryset())
+    #     print("Filtered Queryset:", filtered_qs.query) 
+    #     print(WatchList.objects.filter(title="Man vs wild"))
+    #     print(WatchList.objects.filter(title__icontains="man vs wild"))
+    #     return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
