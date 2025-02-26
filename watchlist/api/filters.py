@@ -6,3 +6,9 @@ class WatchListFilter(filters.FilterSet) :
     class Meta:
         model = WatchList
         fields = ['title', 'platform_name', 'avg_rating']
+
+
+
+    
+
+   

@@ -41,16 +41,17 @@ class WatchListViewSet(mixins.ListModelMixin,
     pagination_class = MyPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = WatchListFilter
-
-    # def list(self, request, *args, **kwargs):
-    #     print("🚀 Request Received!")
-    #     print("🔍 Raw Request Data:", request.data)
-    #     print("Query Parameters:", request.GET)  
-    #     filtered_qs = self.filter_queryset(self.get_queryset())
-    #     print("Filtered Queryset:", filtered_qs.query) 
-    #     print(WatchList.objects.filter(title="Man vs wild"))
-    #     print(WatchList.objects.filter(title__icontains="man vs wild"))
-    #     return super().list(request, *args, **kwargs)
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        filter_queryset = self.filter_queryset(queryset)
+        print("🔍 Filtered Queryset:", filter_queryset.query)
+        page = self.paginate_queryset(filter_queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -58,6 +59,10 @@ class WatchListViewSet(mixins.ListModelMixin,
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+data = WatchList.objects.all()
+filtered_data = WatchListFilter({'platform_name': 'Youtube'}, queryset=data).qs
+print(filtered_data)
 
 
 class WatchListDetailApiView(APIView):

@@ -21,3 +21,16 @@ urlpatterns = [
    path('search/', WList.as_view(), name='search'),
 
 ]
+
+
+# from rest_framework.test import APIRequestFactory
+# from watchlist.api.views import WatchListViewSet
+
+# factory = APIRequestFactory()
+# request = factory.get('/watch/list/')  # Simulating a GET request
+# view = WatchListViewSet.as_view({'get': 'list'})  # Binding GET to `list()`
+
+# response = view(request)
+
+# print("✅ Response Status Code:", response.status_code)
+# print("✅ Response Data:", response.data)
