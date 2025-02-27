@@ -22,10 +22,11 @@ class ReviewSerializer(serializers.ModelSerializer):
 #Watch List Start Points
 
 class WatchListSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many=True, read_only=True)
+    # reviews = ReviewSerializer(many=True, read_only=True)
+    platform = serializers.CharField(source='platform.name')
     class Meta:
         model = WatchList
-        fields = ['id','title', 'storyLine','avg_rating','total_reviews', 'active', 'created', 'reviews']
+        fields = ['id','title', 'storyLine','avg_rating','total_reviews', 'active', 'created','platform']
 
 
 #Watch List End

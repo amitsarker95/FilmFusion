@@ -29,7 +29,7 @@ class WatchListFilterView(generics.ListAPIView):
     serializer_class = WatchListSerializer
     filter_backends = [DjangoFilterBackend,filters.SearchFilter, filters.OrderingFilter]
     filterset_class = WatchListFilter
-    search_fields = ['title', 'platform__name']
+    search_fields = ['title', '=platform__name']
 
 class WatchListViewSet(mixins.ListModelMixin,
                        mixins.CreateModelMixin,
