@@ -23,7 +23,6 @@ from .filters import WatchListFilter
 
 
 
-#test view for filters
 class WatchListFilterView(generics.ListAPIView):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
@@ -39,7 +38,7 @@ class WatchListViewSet(mixins.ListModelMixin,
     permission_classes = [AdminOrReadOnly]
     throttle_classes = [AnonRateThrottle]
     pagination_class = MyPagination
-    
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

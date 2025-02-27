@@ -129,7 +129,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '10/day',
+        'anon': '100/day',
         'user': '100/day',
         'review-create' : '3/day',
         'review-list' : '10/day',

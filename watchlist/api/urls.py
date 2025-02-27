@@ -17,20 +17,7 @@ urlpatterns = [
    path('review/<int:pk>/', ReviewDetailView.as_view(), name='review-detail'),
    path('reviews/<str:username>/', UserReviews.as_view(), name='user-reviews'),
    path('reviews/', UserReviewPerams.as_view(), name='user-reviews-detail'),
-   #test urls for filter
    path('search/', WatchListFilterView.as_view(), name='search'),
 
 ]
 
-
-# from rest_framework.test import APIRequestFactory
-# from watchlist.api.views import WatchListViewSet
-
-# factory = APIRequestFactory()
-# request = factory.get('/watch/list/?platform_name=Youtube')  # Simulating a GET request
-# view = WatchListViewSet.as_view({'get': 'list'})  # Binding GET to `list()`
-
-# response = view(request)
-
-# print("✅ Response Status Code:", response.status_code)
-# print("✅ Response Data:", response.data)
