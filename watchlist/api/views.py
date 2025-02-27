@@ -24,12 +24,12 @@ from .filters import WatchListFilter
 
 
 #test view for filters
-class WList(generics.ListAPIView):
+class WatchListFilterView(generics.ListAPIView):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
-    # filter_backends = [DjangoFilterBackend]
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter, filters.OrderingFilter]
     filterset_class = WatchListFilter
+    search_fields = ['title', 'platform__name']
 
 class WatchListViewSet(mixins.ListModelMixin,
                        mixins.CreateModelMixin,
@@ -39,20 +39,7 @@ class WatchListViewSet(mixins.ListModelMixin,
     permission_classes = [AdminOrReadOnly]
     throttle_classes = [AnonRateThrottle]
     pagination_class = MyPagination
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = WatchListFilter
     
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        filter_queryset = self.filter_queryset(queryset)
-        print("🔍 Filtered Queryset:", filter_queryset.query)
-        page = self.paginate_queryset(filter_queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -60,9 +47,6 @@ class WatchListViewSet(mixins.ListModelMixin,
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
-data = WatchList.objects.all()
-filtered_data = WatchListFilter({'platform_name': 'Youtube'}, queryset=data).qs
-print(filtered_data)
 
 
 class WatchListDetailApiView(APIView):
@@ -173,7 +157,7 @@ class ReviewListView(generics.ListAPIView):
     pagination_class = MyPagination
     throttle_classes = [ReviewListThrottle]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['rating', 'active']
+    filterset_fields = ['review_user__username','rating', 'active']
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         return Review.objects.filter(watchlist=pk).order_by('-created')

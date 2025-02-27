@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from watchlist.api.views import WatchListViewSet, WatchListDetailApiView, \
                                 ReviewListView, ReviewDetailView, ReviewCreateView, \
-                                StreamPlatformViewSet, UserReviews, UserReviewPerams, WList
+                                StreamPlatformViewSet, UserReviews, UserReviewPerams, WatchListFilterView
 
 router = DefaultRouter()
 router.register('stream', StreamPlatformViewSet, basename='stream')
@@ -18,7 +18,7 @@ urlpatterns = [
    path('reviews/<str:username>/', UserReviews.as_view(), name='user-reviews'),
    path('reviews/', UserReviewPerams.as_view(), name='user-reviews-detail'),
    #test urls for filter
-   path('search/', WList.as_view(), name='search'),
+   path('search/', WatchListFilterView.as_view(), name='search'),
 
 ]
 
@@ -27,7 +27,7 @@ urlpatterns = [
 # from watchlist.api.views import WatchListViewSet
 
 # factory = APIRequestFactory()
-# request = factory.get('/watch/list/')  # Simulating a GET request
+# request = factory.get('/watch/list/?platform_name=Youtube')  # Simulating a GET request
 # view = WatchListViewSet.as_view({'get': 'list'})  # Binding GET to `list()`
 
 # response = view(request)
